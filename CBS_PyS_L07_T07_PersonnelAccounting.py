@@ -100,16 +100,17 @@ while page_number:
                 add_input = input(f'\t\tEnter person name: ')
                 match add_input.lower():
                     case 'back':
-                        break
+                        add_input = 'skip'
                     case 'exit':
                         exit()
-                person[len(person)] = {'Firstname': add_input,
-                                       'Lastname': '',
-                                       'Experience': 0,
-                                       'Portfolio': False,
-                                       'Efficiency': 0.0,
-                                       'Tech-stack': {Tech_stack[3], Tech_stack[4], Tech_stack[7]},
-                                       'Salary': 0.0}
+                if add_input != 'skip':
+                    person[len(person)] = {'Firstname': add_input,
+                                           'Lastname': '',
+                                           'Experience': 0,
+                                           'Portfolio': False,
+                                           'Efficiency': 0.0,
+                                           'Tech-stack': {Tech_stack[3], Tech_stack[4], Tech_stack[7]},
+                                           'Salary': 0.0}
             case 'exit':
                 exit()
     else:
