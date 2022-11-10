@@ -35,21 +35,28 @@ Tech_stack = {1: 'Operating systems and programming languages',
               9: 'Behavioral and product analytics'}
 
 person = dict()
-for i in range(26):
-    person[i] = {'Firstname': chr(97 + 25 - i) + 'Oleg',
-                 'Lastname': chr(97 + i) + 'Blonskyi',
-                 'Experience': 5,
-                 'Portfolio': True,
-                 'Efficiency': 0.78,
-                 'Tech-stack': {Tech_stack[3], Tech_stack[4], Tech_stack[7]},
-                 'Salary': 156480.0}
-
-person_firstname_sorted_tuples = sorted(person.items(), key=lambda item: item[1]['Firstname'] + item[1]['Lastname'])
-person_firstname_sorted = {k: v for k, v in person_firstname_sorted_tuples}
+# for i in range(26):
+#     person[i] = {'Firstname': chr(97 + 25 - i) + 'Oleg',
+#                  'Lastname': chr(97 + i) + 'Blonskyi',
+#                  'Experience': 5,
+#                  'Portfolio': True,
+#                  'Efficiency': 0.78,
+#                  'Tech-stack': {Tech_stack[3], Tech_stack[4], Tech_stack[7]},
+#                  'Salary': 156480.0}
+person[0] = {'Firstname': 'Oleg',
+             'Lastname': 'Blonskyi',
+             'Experience': 5,
+             'Portfolio': True,
+             'Efficiency': 0.78,
+             'Tech-stack': {Tech_stack[3], Tech_stack[4], Tech_stack[7]},
+             'Salary': 156480.0}
 
 page_number = 1
 while page_number:
-
+    person_firstname_sorted_tuples = sorted(person.items(), key=lambda item: item[1]['Firstname'] + item[1]['Lastname'])
+    person_firstname_sorted = {k: v for k, v in person_firstname_sorted_tuples}
+    # print(person_firstname_sorted_tuples)
+    # print(person_firstname_sorted)
     print(f'\t{"".center(38, " ").center(40, ".")}'
           f'\n\t{"main board".center(30, " ")}{"exit".center(10, " ")}'
           f'\n\t{"prev".center(10, " ")}'
@@ -61,8 +68,8 @@ while page_number:
     for i in range(0 + 7 * (page_number - 1), 7 + 7 * (page_number - 1)):
         if i in range(len(person_firstname_sorted)):
             print(f'\t{str(list(person_firstname_sorted.keys())[i]).rjust(10)}',
-                  f'\t{person[list(person.keys())[i]]["Firstname"]} '
-                  f'{person[list(person.keys())[i]]["Lastname"]}'[0:20])
+                  f'\t{person[list(person_firstname_sorted.keys())[i]]["Firstname"]} '
+                  f'{person[list(person_firstname_sorted.keys())[i]]["Lastname"]}'[0:20])
         else:
             print()
 
@@ -73,8 +80,9 @@ while page_number:
 
     main_input = input(f'\t\tEnter your choice: ')
     try:
-        list(person.values())[int(main_input)]
-    except (IndexError, ValueError):
+        # list(person.values())[int(main_input)]
+        person[int(main_input)]
+    except (IndexError, ValueError, KeyError):
         match main_input:
             case 'prev':
                 if page_number > 1:
@@ -83,7 +91,20 @@ while page_number:
                 if page_number <= (len(person) // 7):
                     page_number += 1
             case 'add':
-                pass  # TODO creating new person
+                print()
+                print(f'\t{"".center(38, " ").center(40, ".")}')
+                print(f'\t{"New account creation".center(40, " ")}')
+                print(f'\t', f'{"for id #" + str(len(person)):^20}{"back":^10}{"exit":^10}', sep='')
+                print(f'\n\t', f'enter person name to create'.center(40),
+                      f'\n\t', ''.center(38, " ").center(40, "."), f'\n', sep='')
+                add_input = input(f'\t\tEnter person name: ')
+                person[len(person)] = {'Firstname': add_input,
+                                       'Lastname': '',
+                                       'Experience': 0,
+                                       'Portfolio': False,
+                                       'Efficiency': 0.0,
+                                       'Tech-stack': {Tech_stack[3], Tech_stack[4], Tech_stack[7]},
+                                       'Salary': 0.0}
             case 'exit':
                 exit()
     else:
@@ -92,7 +113,7 @@ while page_number:
             print()
             print(f'\t{"".center(38, " ").center(40, ".")}')
             print(f'\t',
-                  f'{person[main_input]["Firstname"]} {person[main_input]["Lastname"]}'[0:18].center(20, " "),
+                  f'remove'.center(20, " "),
                   "back".center(10, " "), "exit".center(10, " "), sep='')
             print()
             print(f'\t', f'Firstname\t\t'.rjust(20), f'{person[main_input]["Firstname"]}'.ljust(20), sep='')
@@ -281,7 +302,10 @@ while page_number:
                         else:
                             person[main_input]["Salary"] = float(edit_field_input)
                             break
+                case 'remove':
+                    del person[main_input]
+                    break
                 case 'back':
-                    pass
+                    break
                 case 'exit':
                     exit()
