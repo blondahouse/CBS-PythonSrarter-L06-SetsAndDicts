@@ -1,11 +1,8 @@
-# i have to create a dictionary with a lot of people. so...
-# People = {id: {lib_of_values}}
-
 # Name = {id: [first_name, last_name, nickname]}
 # Experience = just a value, or maybe a start working year... no too difficult, just a value. Natural integer.
 # Portfolio = no idea... let it be boolean
 # Efficiency = just a value, maybe its smth dynamic, floating number in range [0,1]
-# Techstack = {id: technology}
+# Techs-tack = {id: technology}
 # Salary = just a value, real, floating
 
 # So... the first man looks like
@@ -13,7 +10,7 @@
 #     Experience: 5,
 #     Portfolio: True,
 #     Efficiency: 0.78,
-#     Techstack: [Techstack[3], Techstack[4], Techstack[7]]
+#     Tech-stack: [Tech-stack[3], Tech-stack[4], Tech-stack[7]]
 #     Salary: 156480.0}
 
 # Shown as (if we get a person card):
@@ -21,22 +18,10 @@
 #       Experience      5 years
 #       Portfolio       Exists
 #       Efficiency      0.78
-#       Techstack       - Data storage and querying
+#       Tech-stack       - Data storage and querying
 #                       - Backend Framework
 #                       - Monitoring and performance tools
 #       Salary          $156 480.00
-
-# So... the name table is...
-# Name = dict()
-# name_001 = dict(first_name='Oleg', last_name='Blonskyi', nickname='blondahouse')
-# I don't need this variable
-# Name['blondahouse'] = {'first_name': 'Oleg', 'last_name': 'Blonskyi'}
-# no I don't need this dict at all
-
-# Creating new name:
-# 1. input nickname
-# 2. check if the name already in the dictionary
-# 3. add to the dict
 
 # Tech-stack
 Tech_stack = {1: 'Operating systems and programming languages',
@@ -49,7 +34,6 @@ Tech_stack = {1: 'Operating systems and programming languages',
               8: 'Business intelligence solutions',
               9: 'Behavioral and product analytics'}
 
-# Person dictionary for experiments
 person = dict()
 for i in range(26):
     person[i] = {'Firstname': chr(97 + 25 - i) + 'Oleg',
@@ -60,22 +44,9 @@ for i in range(26):
                  'Tech-stack': {Tech_stack[3], Tech_stack[4], Tech_stack[7]},
                  'Salary': 156480.0}
 
-# for i in range(len(Person)):
-# print(Person.items())
 person_firstname_sorted_tuples = sorted(person.items(), key=lambda item: item[1]['Firstname'] + item[1]['Lastname'])
 person_firstname_sorted = {k: v for k, v in person_firstname_sorted_tuples}
 
-# person[1]["Portfolio"] = bool('False')
-# print(f'bool 0 = {bool("0")}')
-# print(f'bool True = {bool("True".lower().strip())}')
-# print(f'bool False = {bool("False".lower().strip())}')
-# print(person[1]["Portfolio"])
-
-# print(list(person_firstname_sorted.keys())[1])
-# print(list(person.values())[])
-# print(list(person[main_input]["Tech-stack"])[i][0:24])
-# exit()
-# Main page
 page_number = 1
 while page_number:
 
@@ -131,7 +102,7 @@ while page_number:
             print(f'\t', f'Experience\t\t'.rjust(20), f'{person[main_input]["Experience"]} years'.ljust(20), sep='')
             print(f'\t', f'Portfolio\t\t'.rjust(20), f'{person[main_input]["Portfolio"]}', sep='')
             print(f'\t', f'Efficiency\t\t'.rjust(20), f'{person[main_input]["Efficiency"]:.0%}',
-                  sep='')  # TODO % formatting
+                  sep='')
             print(f'\t', f'Tech-stack\t\t'.rjust(20), sep='')
             for i in range(len(person[main_input]["Tech-stack"])):
                 print(f'\t', f''.center(10), f'- {list(person[main_input]["Tech-stack"])[i][0:24]}'.ljust(30), sep='')
@@ -249,7 +220,45 @@ while page_number:
                             person[main_input]["Efficiency"] = float(edit_field_input)
                             break
                 case 'tech-stack':
-                    pass  # TODO selecting from list
+                    print(f'\n\t{"".center(38, " ").center(40, ".")}'
+                          f'\n\t',
+                          f'{person[main_input]["Firstname"]} '
+                          f'{person[main_input]["Lastname"]}'[0:18].center(20, " "),
+                          "back".center(10, " "), "exit".center(10, " "),
+                          f'\n\t', f'{"":^5}', f'Current tech-stack is:', sep='')
+                    for i in person[main_input]["Tech-stack"]:
+                        if len(i) <= 28:
+                            print(f'\t', f'{"":^8}', f'{i:<30}', sep='')
+                        else:
+                            print(f'\t', f'{"":^8}', f'{i[0:25] + "...":<30}', sep='')
+                    print(f'\n\t', f'{"":^5}', f'{"Possible values:":<30}', sep='')
+                    for i in Tech_stack.items():
+                        if len(i[1]) <= 25:
+                            print(f'\t', f'{"":^8}', f'{i[0]:d}. {i[1]:<30}', sep='')
+                        else:
+                            print(f'\t', f'{"":^8}', f'{i[0]:d}. {i[1][0:22] + "...":<30}', sep='')
+                    print(f'\n\t', f'enter stack IDs to set'.center(40),
+                          f'\n\t', ''.center(38, " ").center(40, "."), f'\n', sep='')
+                    while True:
+                        edit_field_input = input(f'\t\tList new stack IDs by space: ')
+                        try:
+                            for i in edit_field_input.strip().split():
+                                # int(i) if int(i) in Tech_stack.keys() else ValueError
+                                if int(i) in Tech_stack.keys():
+                                    int(i)
+                                else:
+                                    raise ValueError
+                        except ValueError:
+                            match edit_field_input.lower():
+                                case 'back':
+                                    break
+                                case 'exit':
+                                    exit()
+                        else:
+                            person[main_input]["Tech-stack"].clear()
+                            for i in edit_field_input.strip().split():
+                                person[main_input]["Tech-stack"].add(Tech_stack[int(i)])
+                            break
                 case 'salary':
                     print(f'\n\t{"".center(38, " ").center(40, ".")}'
                           f'\n\t',
