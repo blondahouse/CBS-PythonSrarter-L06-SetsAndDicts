@@ -98,6 +98,11 @@ while page_number:
                 print(f'\n\t', f'enter person name to create'.center(40),
                       f'\n\t', ''.center(38, " ").center(40, "."), f'\n', sep='')
                 add_input = input(f'\t\tEnter person name: ')
+                match add_input.lower():
+                    case 'back':
+                        break
+                    case 'exit':
+                        exit()
                 person[len(person)] = {'Firstname': add_input,
                                        'Lastname': '',
                                        'Experience': 0,
